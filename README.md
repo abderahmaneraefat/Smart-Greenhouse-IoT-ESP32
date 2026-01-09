@@ -13,7 +13,7 @@ Ce projet est un système intelligent pour le monitoring et l'automatisation d'u
 
 ### 2. Communication (MQTT)
 Le projet utilise le broker public HiveMQ (`broker.hivemq.com`). 
-- L'ESP32 publie les données sur le topic : `ma_serre/data`.
+- L'ESP32 publie les données sur le topic : `serre/data`.
 - Assurez-vous d'avoir une connexion internet pour que l'ESP32 puisse atteindre le broker.
 
 ### 3. Logique & Dashboard (Node-RED)
@@ -25,14 +25,13 @@ Le projet utilise le broker public HiveMQ (`broker.hivemq.com`).
 
 ### 4. Archivage Cloud (ThingSpeak)
 1. Créez un compte sur [ThingSpeak](https://thingspeak.com).
-2. Créez un Channel avec deux champs : `Field 1` (Température) et `Field 2` (Humidité).
+2. Créez un Channel avec quatre champs : Field 1 (Température), Field 2 (Humidité Air), Field 3 (Humidité Sol) et Field 4 (Luminosité).
 3. Remplacez l'API Key dans les blocs **http request** de Node-RED par votre propre **Write API Key**.
 
 ## 📊 Fonctionnement du Système
-- **Température > 30°C** : Le ventilateur (LED Rouge) s'allume automatiquement.
-- **Humidité < 40%** : La pompe à eau (LED Bleue) s'active.
-- Les données sont envoyées toutes les 5 secondes vers le Dashboard et le Cloud.
+Température > 30°C : Le ventilateur (LED Rouge) s'allume automatiquement.
+Sol Sec (Valeur > 2500) : La pompe à eau (LED Bleue) s'active.
+Faible Luminosité (Valeur > 2000) : L'éclairage (LED Jaune) s'allume.
+Température Critique (> 35°C) : L'alarme (Buzzer + LED Orange) se déclenche.
 
----
-**Auteur :** Abderahmane Raefat  
-**Lien du Projet :** [https://github.com/abderahmaneraefat/Smart-Greenhouse-IoT-ESP32](https://github.com/abderahmaneraefat/Smart-Greenhouse-IoT-ESP32)
+
