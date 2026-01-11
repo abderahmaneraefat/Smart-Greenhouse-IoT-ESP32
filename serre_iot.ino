@@ -10,7 +10,7 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 DHT dht(15, DHT22);
 
-// Stockage dyal l-qiyam l-qdam bach n-3erfou wach t-beddlat chi 7aja
+
 float lastT = 0, lastH = 0;
 int lastS = 0, lastL = 0;
 
@@ -46,8 +46,6 @@ void loop() {
   int l = analogRead(34);
 
   if (isnan(t) || isnan(h)) return;
-
-  // --- AUTOMATION LOCALE (Dima khdama) ---
   digitalWrite(4, (t > 30.0) ? HIGH : LOW);
   digitalWrite(2, (s > 2500) ? HIGH : LOW);
   digitalWrite(5, (l > 2000) ? HIGH : LOW);
@@ -55,11 +53,7 @@ void loop() {
   if (t > 35.0) { digitalWrite(18, HIGH); tone(21, 1000); } 
   else { digitalWrite(18, LOW); noTone(21); }
 
-  // --- CHECK DES CHANGEMENTS (Pour MQTT) ---
-  // Ila t-beddlat t b 0.5 aw l-h b 1% aw s b 50 aw l b 50
   if (abs(t - lastT) >= 0.5 || abs(h - lastH) >= 1.0 || abs(s - lastS) >= 50 || abs(l - lastL) >= 50) {
-    
-    // Update des dernières valeurs
     lastT = t; lastH = h; lastS = s; lastL = l;
 
     String payload = "{\"temp\":" + String(t) + ",\"hum\":" + String(h) + ",\"soil\":" + String(s) + ",\"light\":" + String(l) + "}";
